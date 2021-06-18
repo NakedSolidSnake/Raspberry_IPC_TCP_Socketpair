@@ -25,7 +25,7 @@
 * [Referência](#referência)
 
 ## Introdução
-Para que um processo se comunique com o outro de forma bidirecional é necessário ter duas instâncias de _pipe_ para que o canal de escrita do _pipe_ A se conecte ao canal de leitura do _pipe_ B e vice e versa, em termos de código para realizar essa implementação é necessário criar duas instâncias de _pipe_ e inserir como argumento ambos os handles para que a comunicação bidirecional seja possível. Existe uma alternativa para obter esse comportamente de forma simplificada.
+Para que um processo se comunique com o outro de forma bidirecional é necessário ter duas instâncias de _pipe_ para que o canal de escrita do _pipe_ A se conecte ao canal de leitura do _pipe_ B e vice e versa, em termos de código para realizar essa implementação é necessário criar duas instâncias de _pipe_ e inserir como argumento ambos os handles para que a comunicação bidirecional seja possível. Existe uma alternativa para obter esse comportamento de forma simplificada.
 
 ## socketpair
 O _socketpair_ é um _systemcall_ capaz de conectar dois sockets de forma simplificada sem a necessidade de toda a inicialização de uma conexão tcp ou udp, devolvendo dois sockets conectados que podem ser usados para realizar a comunicação entre si de forma bidirecional.
@@ -39,19 +39,19 @@ O _socketpair_ é um _systemcall_ capaz de conectar dois sockets de forma simpli
 int socketpair(int domain, int type, int protocol, int sv[2]);
 ```
 
-Dependendo do protocolo utilizado a forma de realizar a leitura e escrita do socket pode mudar. No caso de uso TCP[https://www.embarcados.com.br/socket-tcp/] usar as _systemcalls_ pertinentes a TCP, o mesmo para UDP[https://www.embarcados.com.br/socket-udp/].
+Dependendo do protocolo utilizado a forma de realizar a leitura e escrita do socket pode mudar. No caso de uso [TCP](https://www.embarcados.com.br/)socket-tcp/] usar as _systemcalls_ pertinentes a TCP, o mesmo para [UDP](https://www.embarcados.com.br/socket-udp/).
 
 
 ## Implementação
 
 Para demonstrar o uso desse IPC, vai ser utilizado o modelo Produtor/Consumidor, onde o processo Produtor(_button_process_) vai escrever seu estado interno no arquivo, e o Consumidor(_led_process_) vai ler o estado interno e vai aplicar o estado para si. Aplicação é composta por três executáveis sendo eles:
-* _launch_processes_ - é responsável por criar os _sockets_ e lançar os processos _button_process_ e _led_process_ atráves da combinação _fork_ e _exec_
-* _button_interface_ - é reponsável por ler o GPIO em modo de leitura da Raspberry Pi e escrever o estado interno no arquivo
-* _led_interface_ - é reponsável por ler do arquivo o estado interno do botão e aplicar em um GPIO configurado como saída
+* _launch_processes_ - é responsável por criar os _sockets_ e lançar os processos _button_process_ e _led_process_ através da combinação _fork_ e _exec_
+* _button_interface_ - é responsável por ler o GPIO em modo de leitura da Raspberry Pi e escrever o estado interno no arquivo
+* _led_interface_ - é responsável por ler do arquivo o estado interno do botão e aplicar em um GPIO configurado como saída
 
 ### *launch_processes*
 
-No _main_ é criado algumas variáveis iniciando com _pair_ que corresponde aos _sockets_ quevão ser criados, *pid_button* e *pid_led* que recebem o pid dos processos referentes à *button_process* e *led_process*, duas variáveis para armazenar o resultado caso o _exec_ venha a falhar e um _buffer_ para montar a lista de argumentos.
+No _main_ é criado algumas variáveis iniciando com _pair_ que corresponde aos _sockets_ que vão ser criados, *pid_button* e *pid_led* que recebem o pid dos processos referentes à *button_process* e *led_process*, duas variáveis para armazenar o resultado caso o _exec_ venha a falhar e um _buffer_ para montar a lista de argumentos.
 ```c
 int pair[2];
 int pid_button, pid_led;
@@ -239,7 +239,7 @@ $ ./kill_process.sh
 ```
 
 ## Conclusão
-O _socketpair_ é uma boa alternativa para o uso de _pipes_[https://www.embarcados.com.br/pipes/] pois facilita o modo de comunicação entre processos caso haja necessidade que os processos se comuniquem entre si, ou seja, de forma bidirecional. Devido a sua facilidade de criação do par de _sockets_, isso o torna relativamente fácil de usar. Portanto caso houver a necessidade de usar _pipes_ sempre prefira o _socketpair_ por garantir a comunicação entre ambas as direções.
+O _socketpair_ é uma boa alternativa para o uso de [_pipes_](https://www.embarcados.com.br/pipes/) pois facilita o modo de comunicação entre processos caso haja necessidade que os processos se comuniquem entre si, ou seja, de forma bidirecional. Devido a sua facilidade de criação do par de _sockets_, isso o torna relativamente fácil de usar. Portanto caso houver a necessidade de usar _pipes_ sempre prefira o _socketpair_ por garantir a comunicação entre ambas as direções.
 
 ## Referência
 * [Link do projeto completo](https://github.com/NakedSolidSnake/Raspberry_IPC_TCP_Socketpair)
