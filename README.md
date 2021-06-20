@@ -6,6 +6,8 @@
 
 ## Tópicos
 * [Introdução](#introdução)
+* [socketpair](#socketpair-1)
+* [Systemcalls usados no socketpair](##systemcalls-usados-no-socketpair)
 * [Implementação](#implementação)
 * [launch_processes](#launch_processes)
 * [button_interface](#button_interface)
